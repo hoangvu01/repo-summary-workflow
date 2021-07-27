@@ -1,0 +1,16 @@
+name: 'Repository summary'
+description: 'Write a summary for a list of selected repositories into a README file'
+inputs:
+  readme_path:
+    description: 'Path to the readme file (relative to the root of the git repo) you want to update'
+    default: './README.md'
+    required: false
+  repo-list:
+    description: 'A list of repos to display'
+    required: true
+outputs:
+  results:
+    description: 'The JSON serialised result of the repos attributes'
+runs:
+  using: 'node12'
+  main: 'index.js'
