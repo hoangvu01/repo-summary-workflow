@@ -60,6 +60,17 @@ function calculateAttributes(languages) {
 }
 
 /*
+ * Create a text node for the legend.
+ */
+const createLanguageNode = (language, attributes) => [
+    '<li>',
+    '<svg viewbox="0 0 16 16" width="12" height="12">',
+    `<circle cx="8" cy="8" r="8" fill="${attributes.colour}"/>`,
+    '</svg>',
+    ` ${language} - ${Math.round(attributes.ratio * 100)}% (${attributes.size} bytes)`,
+    '</li>',
+].join("");
+/*
  * Creates a horizontal bar representing the ratio of languages used.
  * 
  * @param {Object<String, int>} 
@@ -85,11 +96,16 @@ function createLanguageBar(languages, width = 250, height = 20) {
         offset += width * value.ratio;
     });
 
+
+
     return [
         `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" version="1.1">`,
         `<rect rx="8" x="0" width="100%" height="100%"></rect>`,
         ...Object.values(spans),
-        '</svg>',
+        '</svg><br/>',
+        '<ol>',
+        ...Object.entries(enriched).map(([lang, value]) => createLanguageNode(lang, value)),
+        '</ol>',
     ].join("\n");
 }
 
