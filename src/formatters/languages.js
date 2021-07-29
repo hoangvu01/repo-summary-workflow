@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 /* Generates a random colour.
  * @returns string
  */
@@ -20,7 +22,7 @@ function getRandomColour() {
  *          maxCount - the number of entries in the output
  * @returns Object<string, int>
  */
-function aggregateLanguages(languages, { maxCount = 5 }) {
+function aggregateLanguages(languages, maxCount = 5) {
     // Create items array
     var items = Object.keys(languages).map((key) => [key, languages[key]]);
 
@@ -62,14 +64,12 @@ function calculateAttributes(languages) {
 /*
  * Create a text node for the legend.
  */
-const createLanguageNode = (language, attributes) => [
-    '<li>',
-    '<svg viewbox="0 0 16 16" width="12" height="12">',
-    `<circle cx="8" cy="8" r="8" fill="${attributes.colour}"/>`,
-    '</svg>',
-    `<code> ${language} </code> - <strong>${Math.round(attributes.ratio * 100)}%</strong> (${attributes.size} bytes)`,
-    '</li>',
-].join("");
+const createLanguageNode = (colour) =>
+    '<svg viewbox="0 0 16 16" width="12" height="12">'
+    + `<circle cx="8" cy="8" r="8" fill="${colour}"/>`
+    + '</svg>';
+
+
 /*
  * Creates a horizontal bar representing the ratio of languages used.
  * 
@@ -83,32 +83,26 @@ const createLanguageNode = (language, attributes) => [
  * 
  * @returns string
  */
-function createLanguageBar(languages, width = 250, height = 20) {
-
-    const aggregated = aggregateLanguages(languages, maxCount = 5);
-    const enriched = calculateAttributes(aggregated);
-
+function createLanguageBar(languages, output_path, width = 250, height = 20) {
     // Generate the span for each languages
     var spans = {};
     var offset = 0;
-    Object.entries(enriched).forEach(([key, value]) => {
+    Object.entries(languages).forEach(([key, value]) => {
         spans[key] = `<rect x="${offset}" width="${value.ratio * width}" height="${height}" fill="${value.colour}"> </rect>`
         offset += width * value.ratio;
     });
 
-
-
-    return [
+    fs.writeFileSync(output_path, [
         `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" version="1.1">`,
         `<rect rx="8" x="0" width="100%" height="100%"></rect>`,
         ...Object.values(spans),
-        '</svg><br/>',
-        '<ol>',
-        ...Object.entries(enriched).map(([lang, value]) => createLanguageNode(lang, value)),
-        '</ol>',
-    ].join("\n");
+        '</svg>',
+    ].join("\n"));
 }
 
 module.exports = {
+    aggregateLanguages,
+    calculateAttributes,
     createLanguageBar,
+    createLanguageNode,
 }

@@ -5,9 +5,17 @@ inputs:
     description: 'Path to the readme file (relative to the root of the git repo) you want to update'
     default: './README.md'
     required: false
-  repo-list:
+  repo_list:
     description: 'A list of repos to display'
     required: true
+  image_folder:
+    description: 'Name of the folder to write images to. This folder might be overriden.'
+    required: false
+    default: 'images/'
+  max_language_count:
+    description: 'Maximum number of languages displayed'
+    required: false
+    default: '5'
 outputs:
   results:
     description: 'The JSON serialised result of the repos attributes'

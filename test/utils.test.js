@@ -1,23 +1,23 @@
 const fs = require('fs');
-const { buildFile, writeFile } = require('../src/utils');
+const path = require('path');
+const { buildFile } = require('../src/utils');
+const { createLanguageBar, calculateAttributes } = require('../src/formatters/languages');
 
-const README_PATH = "./test_readme.md";
-const README_PREFIX = "# Prefix...";
-const README_INSERT_TAG = "<!--REPO-SUMMARY-->";
-const README_SUFFIX = "# Suffix";
+const {
+    README_PATH,
+    README_PREFIX,
+    README_INSERT_TAG,
+    README_SUFFIX,
+    OUT_FOLDER,
+
+    initDummyReadme,
+} = require("./common");
 
 const languages = {
     "python": 120,
     "js": 60,
     "others": 30,
 };
-
-function initDummyReadme() {
-    fs.writeFileSync(README_PATH, [
-        README_PREFIX,
-        README_INSERT_TAG,
-    ].join(""));
-}
 
 test('Insertion tag is removed in `buildFile`', () => {
     const oldContent = [
@@ -58,12 +58,20 @@ test('Old content is unaffected by `buildFile`', () => {
 
 });
 
-test('Chart is inserted correctly at insert tag', () => {
-    initDummyReadme();
-    writeFile(README_PATH, languages);
+test('SVG can be generated', () => {
+    if (!fs.existsSync(OUT_FOLDER)) {
+        fs.mkdirSync(OUT_FOLDER, { recursive: true });
+    }
 
-    const data = fs.readFileSync(README_PATH, 'utf-8');
+    const pathToSvg = path.join(OUT_FOLDER, "languages.svg");
+    const enriched = calculateAttributes(languages);
+    createLanguageBar(enriched, pathToSvg);
 
-    expect(data).toEqual(expect.stringContaining("120 bytes"));
+    if (!fs.existsSync(pathToSvg)) {
+        throw `SVG file has not yet been written: ${pathToSvg}`;
+    }
+
+    const svgData = fs.readFileSync(pathToSvg);
+    expect(svgData).not.toBeNull();
 });
 

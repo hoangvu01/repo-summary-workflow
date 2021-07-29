@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const { Octokit } = require("@octokit/rest");
 const fs = require('fs');
-const { createLanguageBar } = require('./card/languages');
+const { createLanguageBar } = require('./formatters/languages');
 
 const octokit = new Octokit({
     userAgent: 'repo-summary-workflow v1.0',
@@ -28,16 +28,12 @@ function buildFile(oldContent, newContent) {
 }
 
 
-function writeFile(path, langs) {
-    const readmeData = fs.readFileSync(path, 'utf-8');
+function writeFile(path, newContent) {
+    const oldContent = fs.readFileSync(path, 'utf-8');
 
-    const languageBar = createLanguageBar(langs);
-    const newReadmeData = buildFile(readmeData, languageBar);
-
-
-    if (readmeData !== newReadmeData) {
+    if (oldContent !== newContent) {
         core.info('Writing to ' + path);
-        fs.writeFileSync(path, newReadmeData);
+        fs.writeFileSync(path, newContent);
     }
 }
 
