@@ -10,13 +10,12 @@ const octokit = new Octokit({
 });
 
 
-function buildReadmeStats(oldContent, newContent) {
+function buildFile(oldContent, newContent) {
     const insertTag = "<!--REPO-SUMMARY-->";
     const tagIndex = oldContent.indexOf(insertTag);
 
     if (tagIndex === -1) {
-        core.error(`Unable to find the tag specifying start of insertion section: ${insertTag}`);
-        process.exit(1);
+        throw `Unable to find tag marking insertion point. Required ${insertTag}`;
     }
 
     return [
@@ -29,11 +28,11 @@ function buildReadmeStats(oldContent, newContent) {
 }
 
 
-function writeReadme(path, langs) {
+function writeFile(path, langs) {
     const readmeData = fs.readFileSync(path, 'utf-8');
 
     const languageBar = createLanguageBar(langs);
-    const newReadmeData = buildReadmeStats(readmeData, languageBar);
+    const newReadmeData = buildFile(readmeData, languageBar);
 
 
     if (readmeData !== newReadmeData) {
@@ -43,5 +42,6 @@ function writeReadme(path, langs) {
 }
 
 module.exports = {
-    writeReadme,
+    buildFile,
+    writeFile,
 }
