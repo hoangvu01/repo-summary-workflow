@@ -67,7 +67,7 @@ const createLanguageNode = (language, attributes) => [
     '<svg viewbox="0 0 16 16" width="12" height="12">',
     `<circle cx="8" cy="8" r="8" fill="${attributes.colour}"/>`,
     '</svg>',
-    ` ${language} - ${Math.round(attributes.ratio * 100)}% (${attributes.size} bytes)`,
+    `<code> ${language} </code> - <strong>${Math.round(attributes.ratio * 100)}%</strong> (${attributes.size} bytes)`,
     '</li>',
 ].join("");
 /*
