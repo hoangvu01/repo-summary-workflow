@@ -39,7 +39,6 @@ function writeReadme(path, langs) {
     if (readmeData !== newReadmeData) {
         core.info('Writing to ' + path);
         fs.writeFileSync(path, newReadmeData);
-        process.exit(0);
     }
 }
 

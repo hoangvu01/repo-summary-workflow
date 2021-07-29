@@ -17,9 +17,12 @@ function initDummyReadme() {
     ].join(""));
 }
 
-function testWriteReadme() {
+test('Chart is inserted correctly at insert tag', () => {
     initDummyReadme();
     writeReadme(README_PATH, languages);
-}
 
-testWriteReadme();
+    const data = fs.readFileSync(README_PATH, 'utf-8');
+
+    expect(data).toEqual(expect.stringContaining("120 bytes"));
+});
+
