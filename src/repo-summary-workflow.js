@@ -89,4 +89,6 @@ Promise.allSettled(promiseArray).then((results) => {
     const readme = fs.readFileSync(README_PATH);
     const newReadme = buildFile(readme, summary);
     writeFile(README_PATH, newReadme);
+
+    console.log('Workflow output:\n' + summary);
 });

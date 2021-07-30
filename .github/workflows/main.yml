@@ -1,0 +1,20 @@
+on: [push]
+
+jobs: 
+  repo_summary_job:
+    runs-on: ubuntu-latest
+    name: Write a summary of specified repositories into a Markdown file
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: repo-summary-worflow step
+        uses: ./ 
+        id: rsw
+        with:
+          readme_path: ./example/README.md
+          repo_list: |
+            hoangvu01/Tetris-Plus-Plus \
+            hoangvu01/not-here 
+          image_folder: assets/
+          lang_bar_height: 12
+          lang_bar_width: 200
