@@ -6189,6 +6189,79 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 9015:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const { Octokit } = __nccwpck_require__(172);
+
+const octokit = new Octokit({
+    userAgent: 'repo-summary-workflow v1.0',
+    timeZone: 'Europe/London',
+    baseUrl: 'https://api.github.com',
+});
+
+/* 
+ * Hit GitHub API endpoint for basic information about the repository.
+ * See https://docs.github.com/en/rest/reference/repos#get-a-repository
+ */
+const fetchRepository = async (owner, repo) => {
+
+    const response = await octokit.request('GET /repos/{owner}/{repo}', {
+        owner,
+        repo,
+    });
+
+    switch (response.status) {
+        case 404: {
+            throw `Repository ${owner}/${repo} not found.`;
+        }
+        case 403: {
+            throw `Unsufficient permission to view ${owner}/${repo}`;
+        }
+        case 301: {
+            throw `Repository ${owner}/${repo} has been moved permanently.`;
+        }
+    }
+
+    return response.data;
+}
+
+/* 
+ * Retrieve data about the language breakdown of a particular repository.
+ * See https://docs.github.com/en/rest/reference/repos#list-repository-languages
+ */
+const fetchLanguageList = async (owner, repo) => {
+    const response = await octokit.request('GET /repos/{owner}/{repo}/languages', {
+        owner,
+        repo,
+    });
+
+
+    if (response.status != 200) {
+        throw 'Failed to fetch repository languages';
+    }
+
+    return response.data;
+}
+
+
+const getRepositoryInfo = async (owner, repo) => {
+    const basicData = await fetchRepository(owner, repo);
+    const languages = await fetchLanguageList(owner, repo);
+
+    basicData['languages'] = languages;
+
+    return basicData;
+}
+
+module.exports = {
+    fetchRepository,
+    fetchLanguageList,
+    getRepositoryInfo,
+}
+
+/***/ }),
+
 /***/ 1935:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -6369,7 +6442,6 @@ module.exports = {
 const core = __nccwpck_require__(7653);
 const { Octokit } = __nccwpck_require__(172);
 const fs = __nccwpck_require__(5747);
-const { createLanguageBar } = __nccwpck_require__(1935);
 
 const octokit = new Octokit({
     userAgent: 'repo-summary-workflow v1.0',
@@ -6594,8 +6666,10 @@ const github = __nccwpck_require__(75);
 const process = __nccwpck_require__(1765);
 const path = __nccwpck_require__(5622);
 const fs = __nccwpck_require__(5747);
+
 const { aggregateLanguages, createLanguageBar } = __nccwpck_require__(1935);
 const { formatSummary } = __nccwpck_require__(5134);
+const { getRepositoryInfo } = __nccwpck_require__(9015);
 const { buildFile, writeFile } = __nccwpck_require__(8669);
 
 
