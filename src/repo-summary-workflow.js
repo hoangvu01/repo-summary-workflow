@@ -4,8 +4,10 @@ const github = require('@actions/github');
 const process = require('process');
 const path = require('path');
 const fs = require('fs');
+
 const { aggregateLanguages, createLanguageBar } = require('./formatters/languages');
 const { formatSummary } = require('./formatters/summary');
+const { getRepositoryInfo } = require('./fetcher');
 const { buildFile, writeFile } = require('./utils');
 
 

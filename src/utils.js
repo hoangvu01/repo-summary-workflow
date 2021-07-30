@@ -1,7 +1,6 @@
 const core = require('@actions/core');
 const { Octokit } = require("@octokit/rest");
 const fs = require('fs');
-const { createLanguageBar } = require('./formatters/languages');
 
 const octokit = new Octokit({
     userAgent: 'repo-summary-workflow v1.0',
