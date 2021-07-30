@@ -4,9 +4,9 @@ const fs = require("fs");
  * @returns string
  */
 function getRandomColour() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
@@ -24,15 +24,15 @@ function getRandomColour() {
  */
 function aggregateLanguages(languages, maxCount = 5) {
     // Create items array
-    var items = Object.keys(languages).map((key) => [key, languages[key]]);
+    let items = Object.keys(languages).map((key) => [key, languages[key]]);
 
     // Sort the array by DESCENDING order
     items.sort((first, second) => second[1] - first[1]);
 
     if (items.length > maxCount) {
         // Total values for the aggregated languages
-        var aggrBytes = 0;
-        var itemsToAggr = items.slice(start = maxCount - 1);
+        let aggrBytes = 0;
+        let itemsToAggr = items.slice(start = maxCount - 1);
         Object.values(itemsToAggr).forEach(val => aggrBytes += val);
 
         // Replace the last (n - [maxCount] - 1) elements with the aggregated value
@@ -47,10 +47,10 @@ function aggregateLanguages(languages, maxCount = 5) {
  */
 function calculateAttributes(languages) {
     // Calculate total number of bytes across all languages
-    var totalBytes = 0;
+    let totalBytes = 0;
     Object.values(languages).forEach(val => totalBytes += val);
 
-    var res = {};
+    let res = {};
     Object.entries(languages).forEach(([lang, bytes]) => {
         res[lang] = {
             size: bytes,
@@ -85,8 +85,8 @@ const createLanguageNode = (colour) =>
  */
 function createLanguageBar(languages, output_path, width = 250, height = 20) {
     // Generate the span for each languages
-    var spans = {};
-    var offset = 0;
+    let spans = {};
+    let offset = 0;
     Object.entries(languages).forEach(([key, value]) => {
         spans[key] = `<rect x="${offset}" width="${value.ratio * width}" height="${height}" fill="${value.colour}"> </rect>`
         offset += width * value.ratio;

@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const { aggregateLanguages, createLanguageBar } = require('./formatters/languages');
 const { formatSummary } = require('./formatters/summary');
+const { buildFile, writeFile } = require('./utils');
 
 
 // Path to required files (relative to the root)
@@ -34,7 +35,6 @@ let reposArray = [];
 
 // Push items to promise array
 REPO_LIST.forEach((repoId) => {
-
 
     // [repoId] has format {owner}/{repo}
     let words = repoId.trim().split("/");
@@ -82,7 +82,6 @@ Promise.allSettled(promiseArray).then((results) => {
     }, '');
 
     const readme = fs.readFileSync(README_PATH);
-
-
-
+    const newReadme = buildFile(readme, summary);
+    writeFile(README_PATH, newReadme);
 });
