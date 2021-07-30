@@ -16,6 +16,14 @@ inputs:
     description: 'Maximum number of languages displayed'
     required: false
     default: '5'
+  lang_bar_width: 
+    description: 'Width of the language breakdown horizontal bar'
+    required: false
+    default: '100'
+  lang_bar_height: 
+    description: 'Height of the language breakdown horizontal bar'
+    required: false
+    default: '20'
 outputs:
   results:
     description: 'The JSON serialised result of the repos attributes'

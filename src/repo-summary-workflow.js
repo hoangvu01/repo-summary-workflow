@@ -13,6 +13,10 @@ const { buildFile, writeFile } = require('./utils');
 const README_PATH = core.getInput('readme_path');
 const IMAGE_FOLDER = core.getInput('image_folder');
 
+// Config for the language bar
+const LANG_BAR_WIDTH = parseInt(core.getInput('language_bar_width'), 10);
+const LANG_BAR_HEIGHT = parseInt(core.getInput('language_bar_height'), 10);
+
 // Read and parse list of repos from workflow inputs
 const REPO_LIST = core.getMultilineInput('repo_list');
 if (REPO_LIST.length == 0) {
@@ -21,12 +25,8 @@ if (REPO_LIST.length == 0) {
 }
 
 // Parse max. number of languages to display
-try {
-    const MAX_LANG_COUNT = parseInt(core.getInput('max_language_count'), 10)
-} catch (err) {
-    core.error(err);
-    process.exit(1);
-}
+const MAX_LANG_COUNT = parseInt(core.getInput('max_language_count'), 10)
+
 
 // Init list of fetch jobs required
 const promiseArray = [];
@@ -73,7 +73,12 @@ Promise.allSettled(promiseArray).then((results) => {
         repoData['languages'] = calculateAttributes(aggregated);
 
         // Generate the horizontal bar and writes to file
-        createLanguageBar(repoData.languages, path.join(IMAGE_FOLDER, repoData.fullname, "languages.svg"));
+        createLanguageBar(
+            repoData.languages,
+            path.join(IMAGE_FOLDER, repoData.fullname, "languages.svg"),
+            width = LANG_BAR_WIDTH,
+            height = LANG_BAR_HEIGHT,
+        );
     })
 
     const summary = reposArray.reduce((acc, cur, index) => {
