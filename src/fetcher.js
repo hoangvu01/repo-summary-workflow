@@ -6,7 +6,10 @@ const octokit = new Octokit({
     baseUrl: 'https://api.github.com',
 });
 
-
+/* 
+ * Hit GitHub API endpoint for basic information about the repository.
+ * See https://docs.github.com/en/rest/reference/repos#get-a-repository
+ */
 const fetchRepository = async (owner, repo) => {
 
     const response = await octokit.request('GET /repos/{owner}/{repo}', {
@@ -29,6 +32,10 @@ const fetchRepository = async (owner, repo) => {
     return response.data;
 }
 
+/* 
+ * Retrieve data about the language breakdown of a particular repository.
+ * See https://docs.github.com/en/rest/reference/repos#list-repository-languages
+ */
 const fetchLanguageList = async (owner, repo) => {
     const response = await octokit.request('GET /repos/{owner}/{repo}/languages', {
         owner,

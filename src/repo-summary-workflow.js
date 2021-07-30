@@ -3,6 +3,7 @@ const github = require('@actions/github');
 
 const process = require('process');
 const path = require('path');
+const fs = require('fs');
 const { aggregateLanguages, createLanguageBar } = require('./formatters/languages');
 const { formatSummary } = require('./formatters/summary');
 
@@ -79,6 +80,9 @@ Promise.allSettled(promiseArray).then((results) => {
         const formattedSummary = formatSummary(cur);
         return acc + '\n' + formattedSummary;
     }, '');
+
+    const readme = fs.readFileSync(README_PATH);
+
 
 
 });

@@ -10,6 +10,19 @@ const octicon = (item, size, alt) => {
 
 const languageTextTemplate = '1. $node `$lang` - **$ratio%** ($size bytes)';
 
+/*
+ * Generate the summary for the repository given by [repoData].
+ * This function might also generate some artifacts (i.e. SVG files)
+ * and save those to [imgFolder] folder.
+ * 
+ * @param {Object} repoData - the information about the repository as
+ *                            returned by the GitHub API endpoint
+ *                            GET /repos/{owner}/repo
+ * 
+ * @param {string} imgFolder - name of the folder to save images to
+ * 
+ * @returns {string}
+ */
 const formatSummary = (repoData, imgFolder) => {
     const stats = '####  '
         + `${octicon("eye", 20)} ${repoData.watchers_count} `
@@ -18,7 +31,7 @@ const formatSummary = (repoData, imgFolder) => {
 
     const pathToLanguageBar = path.join(imgFolder, repoData.fullname, "languages.svg");
     return [
-        `### ${octicon("repo", 25)} [${repoData.fullname}](${repoData.html_url})`,
+        `### ${octicon("repo", 23)} [${repoData.fullname}](${repoData.html_url})`,
         `> ${octicon("book", 18)} About`,
         `>`,
         `> ${repoData.description}`,
