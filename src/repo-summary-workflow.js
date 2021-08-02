@@ -24,7 +24,7 @@ const REPO_LIST =
     core
         .getInput('repo_list')
         .split(";")
-        .forEach((repo) => repo.trim());
+        .map(item => item.trim());
 
 if (REPO_LIST.length == 0) {
     core.error("The list of repositories should contain at least 1 item");
