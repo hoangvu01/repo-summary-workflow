@@ -25,8 +25,8 @@ const REPO_LIST =
         .getMultilineInput('repo_list')
         .map(repo => repo.replace("\\", "").trim());
 
-console.log(core.getMultilineInput('repo_list'));
-console.log(REPO_LIST);
+core.info(core.getMultilineInput('repo_list'));
+core.info(REPO_LIST);
 
 
 if (REPO_LIST.length == 0) {
