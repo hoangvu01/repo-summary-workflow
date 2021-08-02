@@ -23,7 +23,9 @@ const LANG_BAR_HEIGHT = parseInt(core.getInput('language_bar_height'), 10);
 const REPO_LIST =
     core
         .getMultilineInput('repo_list')
-        .map(repo => repo.trim().replace(/\/$/, ''));
+        .replace("\\", "")
+        .map(repo => repo.trim());
+
 
 if (REPO_LIST.length == 0) {
     core.error("The list of repositories should contain at least 1 item");
