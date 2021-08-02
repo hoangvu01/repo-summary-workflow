@@ -12,9 +12,7 @@ jobs:
         id: rsw
         with:
           readme_path: ./example/README.md
-          repo_list: |
-            hoangvu01/Tetris-Plus-Plus \
-            hoangvu01/not_here 
+          repo_list: hoangvu01/Tetris-Plus-Plus ; hoangvu01/not_here 
           image_folder: assets/
           lang_bar_height: 12
           lang_bar_width: 200

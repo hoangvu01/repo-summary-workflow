@@ -22,13 +22,9 @@ const LANG_BAR_HEIGHT = parseInt(core.getInput('language_bar_height'), 10);
 // Read and parse list of repos from workflow inputs
 const REPO_LIST =
     core
-        .getMultilineInput('repo_list')
-        .forEach((repo) => repo.replace("\\", "").trim());
-
-core.debug(core.getMultilineInput('repo_list'));
-core.debug(REPO_LIST);
-
-
+        .getInput('repo_list')
+        .split(";")
+        .forEach((repo) => repo.trim());
 
 if (REPO_LIST.length == 0) {
     core.error("The list of repositories should contain at least 1 item");
