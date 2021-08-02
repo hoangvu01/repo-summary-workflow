@@ -25,6 +25,9 @@ const REPO_LIST =
         .getMultilineInput('repo_list')
         .map(repo => repo.replace("\\", "").trim());
 
+console.log(core.getMultilineInput('repo_list'));
+console.log(REPO_LIST);
+
 
 if (REPO_LIST.length == 0) {
     core.error("The list of repositories should contain at least 1 item");
