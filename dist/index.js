@@ -6440,15 +6440,8 @@ module.exports = {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(7653);
-const { Octokit } = __nccwpck_require__(172);
+const { exec } = __nccwpck_require__(3129);
 const fs = __nccwpck_require__(5747);
-
-const octokit = new Octokit({
-    userAgent: 'repo-summary-workflow v1.0',
-    timeZone: 'Europe/London',
-    baseUrl: 'https://api.github.com',
-});
-
 
 /* 
  * Looks for the [insertTag] inside [oldContent] and replaces it with 
@@ -6482,6 +6475,10 @@ function buildFile(oldContent, newContent) {
  * 
  * The file is unchanged if the [newContent] is the identical to the
  * current content of the file.
+ * 
+ * Returns [true] iff the file is changed
+ * 
+ * @returns {bool}
  */
 function writeFile(path, newContent) {
     const oldContent = fs.readFileSync(path, 'utf-8');
@@ -6489,12 +6486,60 @@ function writeFile(path, newContent) {
     if (oldContent !== newContent) {
         core.info('Writing to ' + path);
         fs.writeFileSync(path, newContent);
+        return true;
     }
+
+    return false;
+}
+
+function executeCommand(...args) {
+    exec(args.join(" "), (error, stdout, stderr) => {
+        if (error) {
+            core.error(error);
+            return;
+        }
+
+        if (stdout) {
+            core.info(stdout);
+        }
+
+        if (stderr) {
+            core.error(stderr);
+            return;
+        }
+    });
+}
+
+/*
+ * Adds and commits file.
+ * 
+ * @param {string} path - path to file to be committed
+ * @param {string} githubToken - authorisation token for repo
+ * @param {string} username - commit username
+ * @param {string} email - commit email address
+ * @param {string} message - commit message  
+ */
+function commitFile(path, githubToken, username, email, message) {
+    executeCommand("git config --global user.email", email);
+    executeCommand("git config --global user.name", username);
+
+    if (githubToken) {
+        executeCommand(
+            "git remote set-url origin",
+            `https://${githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git`
+        );
+    }
+
+    executeCommand("git add", path);
+    executeCommand("git commit -m", message);
+    executeCommand("git push");
+    core.info("File committed successfully");
 }
 
 module.exports = {
     buildFile,
     writeFile,
+    commitFile,
 }
 
 /***/ }),
@@ -6512,6 +6557,14 @@ module.exports = eval("require")("encoding");
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 3129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 
@@ -6667,11 +6720,13 @@ const process = __nccwpck_require__(1765);
 const path = __nccwpck_require__(5622);
 const fs = __nccwpck_require__(5747);
 
-const { aggregateLanguages, createLanguageBar } = __nccwpck_require__(1935);
+const { aggregateLanguages, createLanguageBar, calculateAttributes } = __nccwpck_require__(1935);
 const { formatSummary } = __nccwpck_require__(5134);
 const { getRepositoryInfo } = __nccwpck_require__(9015);
-const { buildFile, writeFile } = __nccwpck_require__(8669);
+const { buildFile, writeFile, commitFile } = __nccwpck_require__(8669);
 
+// 
+const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
 
 // Path to required files (relative to the root)
 const README_PATH = core.getInput('readme_path');
@@ -6754,7 +6809,15 @@ Promise.allSettled(promiseArray).then((results) => {
 
     const readme = fs.readFileSync(README_PATH);
     const newReadme = buildFile(readme, summary);
-    writeFile(README_PATH, newReadme);
+    const fileChanged = writeFile(README_PATH, newReadme);
+
+    const commitEmail = core.getInput("commit_email");
+    const commitUsername = core.getInput("commit_username");
+    const commitMessage = core.getInput("commit_message");
+
+    if (fileChanged) {
+        commitFile(README_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
+    }
 
     console.log('Workflow output:\n' + summary);
 });
