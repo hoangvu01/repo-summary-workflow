@@ -1,6 +1,18 @@
 name: 'Repository summary'
 description: 'Write a summary for a list of selected repositories into a README file'
 inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token for the workflow'
+    required: true
+  commit_email:
+    description: 'Email for the commit'
+    required: true
+  commit_username:
+    description: 'Username for the commit'
+    required: true
+  commit_message:
+    description: 'Commit message'
+    required: true
   readme_path:
     description: 'Path to the readme file (relative to the root of the git repo) you want to update'
     default: './README.md'

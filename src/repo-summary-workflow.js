@@ -5,11 +5,13 @@ const process = require('process');
 const path = require('path');
 const fs = require('fs');
 
-const { aggregateLanguages, createLanguageBar } = require('./formatters/languages');
+const { aggregateLanguages, createLanguageBar, calculateAttributes } = require('./formatters/languages');
 const { formatSummary } = require('./formatters/summary');
 const { getRepositoryInfo } = require('./fetcher');
-const { buildFile, writeFile } = require('./utils');
+const { buildFile, writeFile, commitFile } = require('./utils');
 
+// 
+const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
 
 // Path to required files (relative to the root)
 const README_PATH = core.getInput('readme_path');
@@ -92,7 +94,15 @@ Promise.allSettled(promiseArray).then((results) => {
 
     const readme = fs.readFileSync(README_PATH);
     const newReadme = buildFile(readme, summary);
-    writeFile(README_PATH, newReadme);
+    const fileChanged = writeFile(README_PATH, newReadme);
+
+    const commitEmail = core.getInput("commit_email");
+    const commitUsername = core.getInput("commit_username");
+    const commitMessage = core.getInput("commit_message");
+
+    if (fileChanged) {
+        commitFile(README_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
+    }
 
     console.log('Workflow output:\n' + summary);
 });
