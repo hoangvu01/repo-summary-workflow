@@ -40,15 +40,19 @@ function buildFile(oldContent, newContent) {
  * @returns {bool}
  */
 function writeFile(path, newContent) {
-    const oldContent = fs.readFileSync(path, 'utf-8');
 
-    if (oldContent !== newContent) {
-        core.info('Writing to ' + path);
-        fs.writeFileSync(path, newContent);
-        return true;
+    if (fs.existsSync(path)) {
+        const oldContent = fs.readFileSync(path, 'utf-8');
+        if (oldContent === newContent) {
+            core.info('File content unchanged...finishing jobs.');
+            return false;
+        }
     }
 
-    return false;
+    core.info('Writing to ' + path);
+    fs.writeFileSync(path, newContent);
+    return true;
+
 }
 
 function executeCommand(...args) {
