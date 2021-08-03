@@ -6497,6 +6497,8 @@ function writeFile(path, newContent) {
 }
 
 function executeCommand(...args) {
+    core.debug("Executing:");
+    core.debug(args.join(" "));
     exec(args.join(" "), (error, stdout, stderr) => {
         if (error) {
             core.error(error);
