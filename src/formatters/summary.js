@@ -25,13 +25,13 @@ const languageTextTemplate = '1. $node `$lang` - **$ratio%** ($size bytes)';
  */
 const formatSummary = (repoData, svgPath) => {
     const stats = '####  '
-        + `${octicon("eye", 20)} ${repoData.watchers_count} `
-        + `${octicon("git-fork", 20)} ${repoData.forks_count} `
-        + `${octicon("star", 20)} ${repoData.stargazers_count} `;
+        + `${octicon("eye", 16)} ${repoData.watchers_count} `
+        + `${octicon("git-fork", 16)} ${repoData.forks_count} `
+        + `${octicon("star", 16)} ${repoData.stargazers_count} `;
 
     return [
-        `### ${octicon("repo", 23)} [${repoData.full_name}](${repoData.html_url})`,
-        `> ${octicon("book", 18)} About`,
+        `### ${octicon("repo", 20)} [${repoData.full_name}](${repoData.html_url})`,
+        `> ${octicon("book", 14)} About`,
         `>`,
         `> ${repoData.description}`,
         '\n',
