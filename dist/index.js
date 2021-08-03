@@ -6725,12 +6725,13 @@ const { formatSummary } = __nccwpck_require__(5134);
 const { getRepositoryInfo } = __nccwpck_require__(9015);
 const { buildFile, writeFile, commitFile } = __nccwpck_require__(8669);
 
-// 
+// GitHub config
 const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
 
 // Path to required files (relative to the root)
 const README_PATH = core.getInput('readme_path');
 const IMAGE_FOLDER = core.getInput('image_folder');
+const OUTPUT_PATH = core.getInput('output_path');
 
 // Config for the language bar
 const LANG_BAR_WIDTH = parseInt(core.getInput('language_bar_width'), 10);
@@ -6816,16 +6817,23 @@ Promise.allSettled(promiseArray).then((results) => {
         return acc + '\n' + formattedSummary;
     }, '');
 
+    // Read in current content of the README file
     const readme = fs.readFileSync(README_PATH);
     const newReadme = buildFile(readme, summary);
-    const fileChanged = writeFile(README_PATH, newReadme);
+
+    // Check if we are overriding the current file
+    if (README_PATH === OUTPUT_PATH) {
+        core.warning(`readme_path is the same as output_path: ${README_PATH}`);
+        core.info(`Overriding current content in ${README_PATH}`);
+    }
+    const fileChanged = writeFile(OUTPUT_PATH, newReadme);
 
     const commitEmail = core.getInput("commit_email");
     const commitUsername = core.getInput("commit_username");
     const commitMessage = core.getInput("commit_message");
 
     if (fileChanged) {
-        commitFile(README_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
+        commitFile(OUTPUT_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
     }
 });
 
