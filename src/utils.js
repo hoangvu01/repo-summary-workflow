@@ -90,7 +90,7 @@ function commitFile(path, githubToken, username, email, message) {
     }
 
     executeCommand("git add", path);
-    executeCommand("git commit -m", message);
+    executeCommand("git commit -m", '"', message, '"');
     executeCommand("git push");
     core.info("File committed successfully");
 }

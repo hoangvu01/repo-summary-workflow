@@ -30,7 +30,7 @@ const formatSummary = (repoData, svgPath) => {
         + `${octicon("star", 20)} ${repoData.stargazers_count} `;
 
     return [
-        `### ${octicon("repo", 23)} [${repoData.fullname}](${repoData.html_url})`,
+        `### ${octicon("repo", 23)} [${repoData.full_name}](${repoData.html_url})`,
         `> ${octicon("book", 18)} About`,
         `>`,
         `> ${repoData.description}`,

@@ -6298,13 +6298,14 @@ function aggregateLanguages(languages, maxCount = 5) {
 
     if (items.length > maxCount) {
         // Total values for the aggregated languages
-        let aggrBytes = 0;
-        let itemsToAggr = items.slice(start = maxCount - 1);
-        Object.values(itemsToAggr).forEach(val => aggrBytes += val);
+        let aggrBytes = items
+            .slice(start = maxCount - 1)
+            .map(([_, bytes]) => bytes)
+            .reduce((a, b) => a + b, 0);
 
         // Replace the last (n - [maxCount] - 1) elements with the aggregated value
         items.splice(start = maxCount - 1);
-        items.push(["others", aggrBytes]);
+        items.push(["Others", aggrBytes]);
     }
     return Object.fromEntries(items);
 }
@@ -6411,7 +6412,7 @@ const formatSummary = (repoData, svgPath) => {
         + `${octicon("star", 20)} ${repoData.stargazers_count} `;
 
     return [
-        `### ${octicon("repo", 23)} [${repoData.fullname}](${repoData.html_url})`,
+        `### ${octicon("repo", 23)} [${repoData.full_name}](${repoData.html_url})`,
         `> ${octicon("book", 18)} About`,
         `>`,
         `> ${repoData.description}`,
@@ -6530,7 +6531,7 @@ function commitFile(path, githubToken, username, email, message) {
     }
 
     executeCommand("git add", path);
-    executeCommand("git commit -m", message);
+    executeCommand("git commit -m", '"', message, '"');
     executeCommand("git push");
     core.info("File committed successfully");
 }
