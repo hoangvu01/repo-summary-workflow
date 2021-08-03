@@ -17,6 +17,10 @@ inputs:
     description: 'Path to the readme file (relative to the root of the git repo) you want to update'
     default: './README.md'
     required: false
+  output_path:
+    description: 'Path to the output file'
+    default: './README.md'
+    required: false
   repo_list:
     description: 'A list of repos to display'
     required: true
