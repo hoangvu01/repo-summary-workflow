@@ -29,7 +29,8 @@ const formatSummary = (repoData, imgFolder) => {
         + `${octicon("git-fork", 20)} ${repoData.forks_count} `
         + `${octicon("star", 20)} ${repoData.stargazers_count} `;
 
-    const pathToLanguageBar = path.join(imgFolder, repoData.fullname, "languages.svg");
+    const svgFolder = path.join(imgFolder, repoData.full_name)
+    const pathToLanguageBar = path.join(svgFolder, "languages.svg");
     return [
         `### ${octicon("repo", 23)} [${repoData.fullname}](${repoData.html_url})`,
         `> ${octicon("book", 18)} About`,

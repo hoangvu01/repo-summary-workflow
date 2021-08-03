@@ -79,9 +79,17 @@ Promise.allSettled(promiseArray).then((results) => {
         repoData['languages'] = calculateAttributes(aggregated);
 
         // Generate the horizontal bar and writes to file
+        const svgFolder = path.join(IMAGE_FOLDER, repoData.full_name);
+
+        // Create the folder
+        if (!fs.existsSync(svgFolder)) {
+            fs.mkdir(svgFolder);
+        }
+
+        // Write svg file into folder
         createLanguageBar(
             repoData.languages,
-            path.join(IMAGE_FOLDER, repoData.fullname, "languages.svg"),
+            path.join(svgFolder, "languages.svg"),
             width = LANG_BAR_WIDTH,
             height = LANG_BAR_HEIGHT,
         );
