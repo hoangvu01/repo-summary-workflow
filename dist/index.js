@@ -6827,8 +6827,6 @@ Promise.allSettled(promiseArray).then((results) => {
     if (fileChanged) {
         commitFile(README_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
     }
-
-    console.log('Workflow output:\n' + summary);
 });
 
 })();
