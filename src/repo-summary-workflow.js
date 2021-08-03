@@ -83,7 +83,7 @@ Promise.allSettled(promiseArray).then((results) => {
 
         // Create the folder
         if (!fs.existsSync(svgFolder)) {
-            fs.mkdir(svgFolder);
+            fs.mkdirSync(svgFolder, { recursive: true });
         }
 
         // Write svg file into folder
