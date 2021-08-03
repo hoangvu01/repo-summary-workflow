@@ -1,20 +1,17 @@
 on: [push]
 
 jobs: 
-  build:
+  test:
     runs-on: ubuntu-latest
-    name: Build & test
+    name: Test
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '12'
       - run: npm ci
-      - run: npm run build --if-present
       - run: npm test
-
-
 
   repo_summary_job:
     runs-on: ubuntu-latest
@@ -30,7 +27,8 @@ jobs:
           commit_username: github-actions
           commit_email: github-actions@github.com
           commit_message: Update repository summaries in README
-          readme_path: ./example/README.md
+          readme_path: ./example/README_TEMPLATE.md
+          output_path: ./example/README.md
           repo_list: hoangvu01/Tetris-Plus-Plus ; hoangvu01/not_here 
           image_folder: assets/
           lang_bar_height: 12
