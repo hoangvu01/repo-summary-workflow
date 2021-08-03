@@ -96,7 +96,7 @@ Promise.allSettled(promiseArray).then((results) => {
     })
 
     const summary = reposArray.reduce((acc, cur, index) => {
-        const svgPath = path.join(IMAGE_FOLDER, repoData.full_name, "languages.svg");
+        const svgPath = path.join(IMAGE_FOLDER, cur.full_name, "languages.svg");
         const formattedSummary = formatSummary(cur, svgPath);
         return acc + '\n' + formattedSummary;
     }, '');
