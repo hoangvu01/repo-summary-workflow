@@ -42,7 +42,7 @@ const formatSummary = (repoData, svgPath) => {
                 languageTextTemplate
                     .replace(/\$node\b/g, createLanguageNode(attrs.colour))
                     .replace(/\$lang\b/g, lang)
-                    .replace(/\$ratio\b/g, Math.round(attrs.ratio * 100))
+                    .replace(/\$ratio\b/g, Math.round(attrs.ratio * 10000) / 100)
                     .replace(/\$size\b/g, attrs.size)
         ),
     ].join("\n");
