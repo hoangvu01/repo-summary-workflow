@@ -118,6 +118,6 @@ Promise.allSettled(promiseArray).then((results) => {
     const commitMessage = core.getInput("commit_message");
 
     if (fileChanged) {
-        commitFile(OUTPUT_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
+        commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
     }
 });

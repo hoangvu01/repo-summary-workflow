@@ -6525,7 +6525,7 @@ function executeCommand(...args) {
  * @param {string} email - commit email address
  * @param {string} message - commit message  
  */
-function commitFile(path, githubToken, username, email, message) {
+function commitFile(githubToken, username, email, message, ...paths) {
     executeCommand("git config --global user.email", email);
     executeCommand("git config --global user.name", username);
 
@@ -6536,7 +6536,7 @@ function commitFile(path, githubToken, username, email, message) {
         );
     }
 
-    executeCommand("git add", path);
+    executeCommand("git add", paths.join(" "));
     executeCommand("git commit -m", '"', message, '"');
     executeCommand("git push");
     core.info("File committed successfully");
@@ -6839,7 +6839,7 @@ Promise.allSettled(promiseArray).then((results) => {
     const commitMessage = core.getInput("commit_message");
 
     if (fileChanged) {
-        commitFile(OUTPUT_PATH, GITHUB_TOKEN, commitUsername, commitEmail, commitMessage);
+        commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
     }
 });
 
