@@ -23,14 +23,12 @@ const languageTextTemplate = '1. $node `$lang` - **$ratio%** ($size bytes)';
  * 
  * @returns {string}
  */
-const formatSummary = (repoData, imgFolder) => {
+const formatSummary = (repoData, svgPath) => {
     const stats = '####  '
         + `${octicon("eye", 20)} ${repoData.watchers_count} `
         + `${octicon("git-fork", 20)} ${repoData.forks_count} `
         + `${octicon("star", 20)} ${repoData.stargazers_count} `;
 
-    const svgFolder = path.join(imgFolder, repoData.full_name)
-    const pathToLanguageBar = path.join(svgFolder, "languages.svg");
     return [
         `### ${octicon("repo", 23)} [${repoData.fullname}](${repoData.html_url})`,
         `> ${octicon("book", 18)} About`,
@@ -38,7 +36,7 @@ const formatSummary = (repoData, imgFolder) => {
         `> ${repoData.description}`,
         '\n',
         stats,
-        `![Language Breakdown](${pathToLanguageBar})`,
+        `![Language Breakdown](${svgPath})`,
         ...Object.entries(repoData.languages).map(
             ([lang, attrs]) =>
                 languageTextTemplate
