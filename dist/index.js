@@ -6819,7 +6819,9 @@ Promise.allSettled(promiseArray).then((results) => {
 
     const summary = reposArray.reduce((acc, cur, index) => {
         const svgPath = path.join(IMAGE_FOLDER, cur.full_name, "languages.svg");
-        const formattedSummary = formatSummary(cur, svgPath);
+        const svgRelPath = path.relative(OUTPUT_PATH, svgPath);
+
+        const formattedSummary = formatSummary(cur, svgRelPath);
         return acc + '\n' + formattedSummary;
     }, '');
 
