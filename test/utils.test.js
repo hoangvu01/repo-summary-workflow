@@ -73,7 +73,5 @@ test('SVG can be generated', () => {
 
     const svgData = fs.readFileSync(pathToSvg);
     expect(svgData).not.toBeNull();
-
-    fs.rmSync(pathToSvg);
 });
 
