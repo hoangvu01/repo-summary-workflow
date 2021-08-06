@@ -66,6 +66,7 @@ function writeFile(path, newContent) {
  */
 const execute = (cmd, args = []) => new Promise((resolve, reject) => {
     let outputData = '';
+    let errorData = '';
 
     core.debug(`Executing: ${cmd} ${args.join(" ")}`);
 
@@ -77,12 +78,28 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
         });
     }
 
+    if (app.stderr) {
+        // Only needed for pipes
+        app.stderr.on('data', function (data) {
+            errorData += data.toString();
+        });
+    }
+
     app.on('close', (code) => {
+        core.info("stdout:");
+        core.info(outputData);
+
+        if (errorData.length > 0) {
+            core.error("stderr:");
+            core.error(errorData);
+        }
+
         if (code !== 0) {
             return reject({ code, outputData });
         }
         return resolve({ code, outputData });
     });
+
     app.on('error', () => reject({ code: 1, outputData }));
 });
 
