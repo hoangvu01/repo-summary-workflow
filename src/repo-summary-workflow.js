@@ -137,6 +137,6 @@ Promise.allSettled(promiseArray).then((results) => {
 
     if (fileChanged) {
         core.debug("File has been changed! Trying to commit...");
-        commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
+        await commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
     }
 });

@@ -6538,21 +6538,26 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
  * @param {string} message - commit message  
  */
 async function commitFile(githubToken, username, email, message, ...paths) {
-    await execute("git", ["config", "--global", "user.email", email]);
-    await execute("git", ["config", "--global", "user.name", username]);
+    try {
 
-    if (githubToken) {
-        await execute(
-            "git", [
-            "remote", "set-url", "origin",
-            `https://${githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git`
-        ]);
+        await execute("git", ["config", "--global", "user.email", email]);
+        await execute("git", ["config", "--global", "user.name", username]);
+
+        if (githubToken) {
+            await execute(
+                "git", [
+                "remote", "set-url", "origin",
+                `https://${githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git`
+            ]);
+        }
+
+        await execute("git", ["add", ...paths]);
+        await execute("git", ["commit", "-m", '"', message, '"']);
+        await execute("git", ["push"]);
+        core.info("Files" + paths.join(" ") + "committed successfully");
+    } catch (err) {
+        core.error(err);
     }
-
-    await execute("git", ["add", ...paths]);
-    await execute("git", ["commit", "-m", '"', message, '"']);
-    await execute("git", ["push"]);
-    core.info("Files" + paths.join(" ") + "committed successfully");
 }
 
 module.exports = {
@@ -6871,7 +6876,7 @@ Promise.allSettled(promiseArray).then((results) => {
 
     if (fileChanged) {
         core.debug("File has been changed! Trying to commit...");
-        commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
+        await commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
     }
 });
 
