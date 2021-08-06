@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const { exec } = require('child_process');
+const execSync = require('exec-sync');
 const fs = require('fs');
 
 /* 
@@ -58,7 +58,7 @@ function writeFile(path, newContent) {
 function executeCommand(...args) {
     core.debug("Executing:");
     core.debug(args.join(" "));
-    exec(args.join(" "), (error, stdout, stderr) => {
+    execSync(args.join(" "), (error, stdout, stderr) => {
         if (error) {
             core.error(error);
             return;

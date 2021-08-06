@@ -6440,7 +6440,7 @@ module.exports = {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(7653);
-const { exec } = __nccwpck_require__(3129);
+const execSync = __nccwpck_require__(7691);
 const fs = __nccwpck_require__(5747);
 
 /* 
@@ -6499,7 +6499,7 @@ function writeFile(path, newContent) {
 function executeCommand(...args) {
     core.debug("Executing:");
     core.debug(args.join(" "));
-    exec(args.join(" "), (error, stdout, stderr) => {
+    execSync(args.join(" "), (error, stdout, stderr) => {
         if (error) {
             core.error(error);
             return;
@@ -6558,19 +6558,19 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
+/***/ 7691:
+/***/ ((module) => {
+
+module.exports = eval("require")("exec-sync");
+
+
+/***/ }),
+
 /***/ 2357:
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("assert");
-
-/***/ }),
-
-/***/ 3129:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
 
 /***/ }),
 
