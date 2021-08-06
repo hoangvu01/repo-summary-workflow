@@ -86,12 +86,9 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
     }
 
     app.on('close', (code) => {
-        core.info("stdout:");
-        core.info(outputData);
-
-        if (errorData.length > 0) {
-            core.error("stderr:");
-            core.error(errorData);
+        if (outputData.length > 0) {
+            core.info("stdout:");
+            core.info(outputData);
         }
 
         if (code !== 0) {
@@ -100,7 +97,13 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
         return resolve({ code, outputData });
     });
 
-    app.on('error', () => reject({ code: 1, outputData }));
+    app.on('error', () => {
+        if (errorData.length > 0) {
+            core.error(`${cmd} ${args.join(" ")}`);
+            core.error(errorData);
+        }
+        reject({ code: 1, outputData });
+    });
 });
 
 /**
