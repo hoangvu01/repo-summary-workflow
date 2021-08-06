@@ -32,11 +32,11 @@ inputs:
     description: 'Maximum number of languages displayed'
     required: false
     default: '5'
-  lang_bar_width: 
+  language_bar_width: 
     description: 'Width of the language breakdown horizontal bar'
     required: false
     default: '100'
-  lang_bar_height: 
+  language_bar_height: 
     description: 'Height of the language breakdown horizontal bar'
     required: false
     default: '20'

@@ -6514,6 +6514,8 @@ const execute = (cmd, args = [], options = {}) => new Promise((resolve, reject) 
     if (!optionsToCLI.stdio) {
         Object.assign(optionsToCLI, { stdio: ['inherit', 'inherit', 'inherit'] });
     }
+    core.debug(`Executing: ${cmd} ${args.join(" ")}` + JSON.stringify(optionsToCLI));
+
     const app = spawn(cmd, args, optionsToCLI);
     if (app.stdout) {
         // Only needed for pipes
