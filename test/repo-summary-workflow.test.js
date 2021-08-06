@@ -22,7 +22,7 @@ const {
 
 const data = {
     html_url: "https://github.com/hoangvu01/Tetris-Plus-Plus",
-    fullname: "hoangvu01/Tetris-Plus-Plus",
+    full_name: "hoangvu01/Tetris-Plus-Plus",
     description: "Sample description",
 
 
@@ -40,7 +40,7 @@ const data = {
 test('Summarise, formats and writes repository details to README', () => {
     initDummyReadme();
 
-    const outFolder = path.join(OUT_FOLDER, data.fullname);
+    const outFolder = path.join(OUT_FOLDER, data.full_name);
     if (!fs.existsSync(outFolder)) {
         fs.mkdirSync(outFolder, { recursive: true });
     }
@@ -58,7 +58,7 @@ test('Summarise, formats and writes repository details to README', () => {
     // Generate the horizontal bar and writes to file
     createLanguageBar(data.languages, pathToSvg);
 
-    const summary = formatSummary(data, OUT_FOLDER);
+    const summary = formatSummary(data, pathToSvg);
     const newFileContent = buildFile(oldContent, summary);
 
     writeFile(README_PATH, newFileContent);
