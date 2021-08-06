@@ -1,4 +1,3 @@
-const path = require('path');
 const { createLanguageNode } = require('./languages');
 
 const octicon = (item, size, alt) => {
@@ -10,7 +9,7 @@ const octicon = (item, size, alt) => {
 
 const languageTextTemplate = '1. $node `$lang` - **$ratio%** ($size bytes)';
 
-/*
+/**
  * Generate the summary for the repository given by [repoData].
  * This function might also generate some artifacts (i.e. SVG files)
  * and save those to [imgFolder] folder.

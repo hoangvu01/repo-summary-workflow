@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const { spawn } = require('child_process');
 const fs = require('fs');
 
-/* 
+/**
  * Looks for the [insertTag] inside [oldContent] and replaces it with 
  * [newContent]. The tag is removed from the returned value. 
  * 
@@ -28,7 +28,7 @@ function buildFile(oldContent, newContent) {
     ].join("");
 }
 
-/* 
+/**
  * Write [newContent] to a file by its [path]. This function creates the
  * file if it does not already exist and override it otherwise.
  * 
@@ -89,7 +89,7 @@ const execute = (cmd, args = [], options = {}) => new Promise((resolve, reject) 
     app.on('error', () => reject({ code: 1, outputData }));
 });
 
-/*
+/**
  * Adds and commits file.
  * 
  * @param {string} path - path to file to be committed

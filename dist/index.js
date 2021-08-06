@@ -6200,7 +6200,7 @@ const octokit = new Octokit({
     baseUrl: 'https://api.github.com',
 });
 
-/* 
+/** 
  * Hit GitHub API endpoint for basic information about the repository.
  * See https://docs.github.com/en/rest/reference/repos#get-a-repository
  */
@@ -6226,7 +6226,7 @@ const fetchRepository = async (owner, repo) => {
     return response.data;
 }
 
-/* 
+/** 
  * Retrieve data about the language breakdown of a particular repository.
  * See https://docs.github.com/en/rest/reference/repos#list-repository-languages
  */
@@ -6267,7 +6267,8 @@ module.exports = {
 
 const fs = __nccwpck_require__(5747);
 
-/* Generates a random colour.
+/** 
+ * Generates a random colour.
  * @returns string
  */
 function getRandomColour() {
@@ -6279,7 +6280,8 @@ function getRandomColour() {
     return color;
 }
 
-/* Aggregate an Object<string, int> so that the result contains the largest [maxCount] - 1 
+/**
+ * Aggregate an Object<string, int> so that the result contains the largest [maxCount] - 1 
  * elements unmodified and the last item is the aggregate of the other values.
  *
  * @param   {Object<string, number>} 
@@ -6310,7 +6312,7 @@ function aggregateLanguages(languages, maxCount = 5) {
     return Object.fromEntries(items);
 }
 
-/* 
+/** 
  * Calculate the percentage of the language throughout the repo and assign a colour. 
  */
 function calculateAttributes(languages) {
@@ -6329,7 +6331,7 @@ function calculateAttributes(languages) {
     return res;
 }
 
-/*
+/**
  * Create a text node for the legend.
  */
 const createLanguageNode = (colour) =>
@@ -6338,7 +6340,7 @@ const createLanguageNode = (colour) =>
     + '</svg>';
 
 
-/*
+/**
  * Creates a horizontal bar representing the ratio of languages used.
  * 
  * @param {Object<String, int>} 
@@ -6380,7 +6382,6 @@ module.exports = {
 /***/ 5134:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const path = __nccwpck_require__(5622);
 const { createLanguageNode } = __nccwpck_require__(1935);
 
 const octicon = (item, size, alt) => {
@@ -6392,7 +6393,7 @@ const octicon = (item, size, alt) => {
 
 const languageTextTemplate = '1. $node `$lang` - **$ratio%** ($size bytes)';
 
-/*
+/**
  * Generate the summary for the repository given by [repoData].
  * This function might also generate some artifacts (i.e. SVG files)
  * and save those to [imgFolder] folder.
@@ -6443,7 +6444,7 @@ const core = __nccwpck_require__(7653);
 const { spawn } = __nccwpck_require__(3129);
 const fs = __nccwpck_require__(5747);
 
-/* 
+/**
  * Looks for the [insertTag] inside [oldContent] and replaces it with 
  * [newContent]. The tag is removed from the returned value. 
  * 
@@ -6469,7 +6470,7 @@ function buildFile(oldContent, newContent) {
     ].join("");
 }
 
-/* 
+/**
  * Write [newContent] to a file by its [path]. This function creates the
  * file if it does not already exist and override it otherwise.
  * 
@@ -6530,7 +6531,7 @@ const execute = (cmd, args = [], options = {}) => new Promise((resolve, reject) 
     app.on('error', () => reject({ code: 1, outputData }));
 });
 
-/*
+/**
  * Adds and commits file.
  * 
  * @param {string} path - path to file to be committed

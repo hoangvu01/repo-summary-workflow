@@ -1,6 +1,7 @@
 const fs = require("fs");
 
-/* Generates a random colour.
+/** 
+ * Generates a random colour.
  * @returns string
  */
 function getRandomColour() {
@@ -12,7 +13,8 @@ function getRandomColour() {
     return color;
 }
 
-/* Aggregate an Object<string, int> so that the result contains the largest [maxCount] - 1 
+/**
+ * Aggregate an Object<string, int> so that the result contains the largest [maxCount] - 1 
  * elements unmodified and the last item is the aggregate of the other values.
  *
  * @param   {Object<string, number>} 
@@ -43,7 +45,7 @@ function aggregateLanguages(languages, maxCount = 5) {
     return Object.fromEntries(items);
 }
 
-/* 
+/** 
  * Calculate the percentage of the language throughout the repo and assign a colour. 
  */
 function calculateAttributes(languages) {
@@ -62,7 +64,7 @@ function calculateAttributes(languages) {
     return res;
 }
 
-/*
+/**
  * Create a text node for the legend.
  */
 const createLanguageNode = (colour) =>
@@ -71,7 +73,7 @@ const createLanguageNode = (colour) =>
     + '</svg>';
 
 
-/*
+/**
  * Creates a horizontal bar representing the ratio of languages used.
  * 
  * @param {Object<String, int>} 
