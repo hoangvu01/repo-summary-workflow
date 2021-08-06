@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="NaN" height="NaN" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20" version="1.1">
 <rect rx="8" x="0" width="100%" height="100%"></rect>
-<rect x="0" width="NaN" height="NaN" fill="#B3135D"> </rect>
-<rect x="NaN" width="NaN" height="NaN" fill="#FE60A1"> </rect>
-<rect x="NaN" width="NaN" height="NaN" fill="#2C53B0"> </rect>
+<rect x="0" width="93.7365766890901" height="20" fill="#42519A"> </rect>
+<rect x="93.7365766890901" width="4.887740909994039" height="20" fill="#86FDC7"> </rect>
+<rect x="98.62431759908414" width="1.37568240091586" height="20" fill="#987AC4"> </rect>
 </svg>

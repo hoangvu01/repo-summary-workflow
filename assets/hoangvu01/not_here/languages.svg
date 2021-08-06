@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="NaN" height="NaN" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20" version="1.1">
 <rect rx="8" x="0" width="100%" height="100%"></rect>
-<rect x="0" width="NaN" height="NaN" fill="#B9B08C"> </rect>
-<rect x="NaN" width="NaN" height="NaN" fill="#FE7B83"> </rect>
-<rect x="NaN" width="NaN" height="NaN" fill="#C27A8C"> </rect>
-<rect x="NaN" width="NaN" height="NaN" fill="#D46969"> </rect>
-<rect x="NaN" width="NaN" height="NaN" fill="#07DCF6"> </rect>
+<rect x="0" width="93.54654996702835" height="20" fill="#CA35AB"> </rect>
+<rect x="93.54654996702835" width="5.537737545710689" height="20" fill="#3C039E"> </rect>
+<rect x="99.08428751273904" width="0.6054792878124813" height="20" fill="#CC41CE"> </rect>
+<rect x="99.68976680055152" width="0.18733888855584196" height="20" fill="#FB4EC1"> </rect>
+<rect x="99.87710568910737" width="0.12289431089263234" height="20" fill="#083AD0"> </rect>
 </svg>
