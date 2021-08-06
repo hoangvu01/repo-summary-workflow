@@ -6440,7 +6440,7 @@ module.exports = {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(7653);
-const execSync = __nccwpck_require__(7691);
+const { spawn } = __nccwpck_require__(3129);
 const fs = __nccwpck_require__(5747);
 
 /* 
@@ -6496,25 +6496,39 @@ function writeFile(path, newContent) {
 
 }
 
-function executeCommand(...args) {
-    core.debug("Executing:");
-    core.debug(args.join(" "));
-    execSync(args.join(" "), (error, stdout, stderr) => {
-        if (error) {
-            core.error(error);
-            return;
-        }
+/**
+ * Thanks to https://github.com/gautamkrishnar/blog-post-workflow/.
+ * 
+ * Executes a command and returns its result as promise
+ * @param {string} cmd command to execute
+ * @param {array} args command line args
+ * @param {Object} options extra options
+ * @returns {Promise<Object>}
+ */
+const execute = (cmd, args = [], options = {}) => new Promise((resolve, reject) => {
+    let outputData = '';
+    const optionsToCLI = {
+        ...options
+    };
+    if (!optionsToCLI.stdio) {
+        Object.assign(optionsToCLI, { stdio: ['inherit', 'inherit', 'inherit'] });
+    }
+    const app = spawn(cmd, args, optionsToCLI);
+    if (app.stdout) {
+        // Only needed for pipes
+        app.stdout.on('data', function (data) {
+            outputData += data.toString();
+        });
+    }
 
-        if (stdout) {
-            core.info(stdout);
+    app.on('close', (code) => {
+        if (code !== 0) {
+            return reject({ code, outputData });
         }
-
-        if (stderr) {
-            core.error(stderr);
-            return;
-        }
+        return resolve({ code, outputData });
     });
-}
+    app.on('error', () => reject({ code: 1, outputData }));
+});
 
 /*
  * Adds and commits file.
@@ -6525,21 +6539,22 @@ function executeCommand(...args) {
  * @param {string} email - commit email address
  * @param {string} message - commit message  
  */
-function commitFile(githubToken, username, email, message, ...paths) {
-    executeCommand("git config --global user.email", email);
-    executeCommand("git config --global user.name", username);
+async function commitFile(githubToken, username, email, message, ...paths) {
+    await execute("git", ["config", "--global", "user.email", email]);
+    await execute("git", ["config", "--global", "user.name", username]);
 
     if (githubToken) {
-        executeCommand(
-            "git remote set-url origin",
+        await execute(
+            "git", [
+            "remote", "set-url", "origin",
             `https://${githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git`
-        );
+        ]);
     }
 
-    executeCommand("git add", paths.join(" "));
-    executeCommand("git commit -m", '"', message, '"');
-    executeCommand("git push");
-    core.info("File committed successfully");
+    await execute("git", ["add", paths.join(" ")]);
+    await execute("git", ["commit", "-m", '"', message, '"']);
+    await execute("git", ["push"]);
+    core.info("Files" + paths.join(" ") + "committed successfully");
 }
 
 module.exports = {
@@ -6558,19 +6573,19 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
-/***/ 7691:
-/***/ ((module) => {
-
-module.exports = eval("require")("exec-sync");
-
-
-/***/ }),
-
 /***/ 2357:
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 3129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 
