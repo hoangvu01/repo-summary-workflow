@@ -6821,6 +6821,8 @@ Promise.allSettled(promiseArray).then((results) => {
             core.error(result.reason);
         }
     });
+}).catch((err) => {
+    core.error(err);
 }).finally(async () => {
 
     reposArray.forEach((repoData) => {
@@ -6871,6 +6873,7 @@ Promise.allSettled(promiseArray).then((results) => {
     const commitMessage = core.getInput("commit_message");
 
     if (fileChanged) {
+        core.debug("File has been changed! Trying to commit...");
         commitFile(GITHUB_TOKEN, commitUsername, commitEmail, commitMessage, OUTPUT_PATH, IMAGE_FOLDER);
     }
 });
