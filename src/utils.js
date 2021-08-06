@@ -64,17 +64,12 @@ function writeFile(path, newContent) {
  * @param {Object} options extra options
  * @returns {Promise<Object>}
  */
-const execute = (cmd, args = [], options = {}) => new Promise((resolve, reject) => {
+const execute = (cmd, args = []) => new Promise((resolve, reject) => {
     let outputData = '';
-    const optionsToCLI = {
-        ...options
-    };
-    if (!optionsToCLI.stdio) {
-        Object.assign(optionsToCLI, { stdio: ['inherit', 'inherit', 'inherit'] });
-    }
-    core.debug(`Executing: ${cmd} ${args.join(" ")}` + JSON.stringify(optionsToCLI));
 
-    const app = spawn(cmd, args, optionsToCLI);
+    core.debug(`Executing: ${cmd} ${args.join(" ")}`);
+
+    const app = spawn(cmd, args);
     if (app.stdout) {
         // Only needed for pipes
         app.stdout.on('data', function (data) {
