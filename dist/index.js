@@ -6533,19 +6533,19 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
             core.info(outputData);
         }
 
+        if (errorData.length > 0) {
+            core.error(`${cmd} ${args.join(" ")}`);
+            core.error(errorData);
+        }
+
         if (code !== 0) {
             return reject({ code, outputData });
         }
         return resolve({ code, outputData });
     });
 
-    app.on('error', (code) => {
-        if (errorData.length > 0) {
-            core.error(`${cmd} ${args.join(" ")}`);
-            core.error(errorData);
-        }
-        reject({ code, outputData, errorData });
-    });
+    app.on('error', (code) => reject({ code, outputData, errorData }));
+
 });
 
 /**
@@ -6572,7 +6572,7 @@ async function commitFile(githubToken, username, email, message, ...paths) {
         }
 
         await execute("git", ["add", ...paths]);
-        await execute("git", ["commit", "-m", '"', message, '"']);
+        await execute("git", ["commit", "-m", '\'', message, '\'']);
         await execute("git", ["push"]);
         core.info("Files" + paths.join(" ") + "committed successfully");
     } catch (err) {

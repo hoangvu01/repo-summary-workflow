@@ -91,19 +91,19 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
             core.info(outputData);
         }
 
+        if (errorData.length > 0) {
+            core.error(`${cmd} ${args.join(" ")}`);
+            core.error(errorData);
+        }
+
         if (code !== 0) {
             return reject({ code, outputData });
         }
         return resolve({ code, outputData });
     });
 
-    app.on('error', (code) => {
-        if (errorData.length > 0) {
-            core.error(`${cmd} ${args.join(" ")}`);
-            core.error(errorData);
-        }
-        reject({ code, outputData, errorData });
-    });
+    app.on('error', (code) => reject({ code, outputData, errorData }));
+
 });
 
 /**
