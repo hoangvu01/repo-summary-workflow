@@ -6755,6 +6755,18 @@ if (REPO_LIST.length == 0) {
 // Parse max. number of languages to display
 const MAX_LANG_COUNT = parseInt(core.getInput('max_language_count'), 10)
 
+// Logging configurations for debugging purposes
+core.debug("Received configurations...echoing...");
+core.debug(
+    JSON.stringify({
+        README_PATH,
+        IMAGE_FOLDER,
+        OUTPUT_PATH,
+        LANG_BAR_WIDTH,
+        LANG_BAR_HEIGHT,
+        REPO_LIST,
+    })
+);
 
 // Init list of fetch jobs required
 const promiseArray = [];
@@ -6819,7 +6831,9 @@ Promise.allSettled(promiseArray).then((results) => {
 
     const summary = reposArray.reduce((acc, cur, index) => {
         const svgPath = path.join(IMAGE_FOLDER, cur.full_name, "languages.svg");
-        const svgRelPath = path.relative(OUTPUT_PATH, svgPath);
+
+        const outFolder = path.dirname(OUTPUT_PATH);
+        const svgRelPath = path.relative(outFolder, svgPath);
 
         const formattedSummary = formatSummary(cur, svgRelPath);
         return acc + '\n' + formattedSummary;
