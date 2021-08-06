@@ -6539,12 +6539,12 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
         return resolve({ code, outputData });
     });
 
-    app.on('error', () => {
+    app.on('error', (code) => {
         if (errorData.length > 0) {
             core.error(`${cmd} ${args.join(" ")}`);
             core.error(errorData);
         }
-        reject({ code: 1, outputData });
+        reject({ code, outputData, errorData });
     });
 });
 
