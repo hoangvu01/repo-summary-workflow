@@ -6554,7 +6554,7 @@ async function commitFile(githubToken, username, email, message, ...paths) {
         ]);
     }
 
-    await execute("git", ["add", paths.join(" ")]);
+    await execute("git", ["add", ...paths]);
     await execute("git", ["commit", "-m", '"', message, '"']);
     await execute("git", ["push"]);
     core.info("Files" + paths.join(" ") + "committed successfully");
