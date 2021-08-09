@@ -6565,23 +6565,21 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
  * @param {string} message - commit message  
  */
 async function commitFile(githubToken, username, email, message, ...paths) {
-    const execIfNotNull = (subject, fn) => {
-        if (subject) fn();
-    };
 
     try {
 
-        execIfNotNull(email, await execute("git", ["config", "--global", "user.email", email]));
-        execIfNotNull(username, await execute("git", ["config", "--global", "user.name", username]));
+        if (email)
+            await execute("git", ["config", "--global", "user.email", email]);
 
-        execIfNotNull(
-            githubToken,
+        if (username)
+            await execute("git", ["config", "--global", "user.name", username]);
+
+        if (githubToken)
             await execute(
                 "git", [
                 "remote", "set-url", "origin",
                 `https://${githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git`
-            ])
-        );
+            ]);
 
 
         await execute("git", ["add", ...paths]);
