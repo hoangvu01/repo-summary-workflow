@@ -1,8 +1,10 @@
- on: [push]
- 
+ on: 
+  push:
+    branches:
+      - "example/**"
+
  jobs:
   repo_summary_job:
-    needs: [test, build]
     runs-on: ubuntu-latest
     name: Write a summary of specified repositories into a Markdown file
     steps:
