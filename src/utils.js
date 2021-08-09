@@ -12,19 +12,21 @@ const fs = require('fs');
  * @returns {string}
  */
 function buildFile(oldContent, newContent) {
-    const insertTag = "<!--REPO-SUMMARY-->";
-    const tagIndex = oldContent.indexOf(insertTag);
+    const startOfInsertTag = "<!-- REPO-SUMMARY:START -->";
+    const endOfInsertTag = "<!-- REPO-SUMMARY:END -->";
+    const startOfTagIndex = oldContent.indexOf(startOfInsertTag);
+    const endOfTagIndex = oldContent.indexOf(endOfInsertTag);
 
-    if (tagIndex === -1) {
-        throw `Unable to find tag marking insertion point. Required ${insertTag}`;
+    if (startOfTagIndex === -1 || endOfTagIndex === -1) {
+        throw `Unable to find tag marking insertion point. Required ${startOfInsertTag} and ${endOfInsertTag}`;
     }
 
     return [
-        oldContent.slice(0, tagIndex),
+        oldContent.slice(0, startOfTagIndex + startOfInsertTag.length),
         '\n',
         newContent,
         '\n',
-        oldContent.slice(tagIndex + insertTag.length)
+        oldContent.slice(endOfTagIndex)
     ].join("");
 }
 

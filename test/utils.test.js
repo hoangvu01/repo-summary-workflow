@@ -4,13 +4,11 @@ const { buildFile } = require('../src/utils');
 const { createLanguageBar, calculateAttributes } = require('../src/formatters/languages');
 
 const {
-    README_PATH,
     README_PREFIX,
-    README_INSERT_TAG,
+    README_START_INSERT_TAG,
+    README_END_INSERT_TAG,
     README_SUFFIX,
     OUT_FOLDER,
-
-    initDummyReadme,
 } = require("./common");
 
 const languages = {
@@ -19,23 +17,26 @@ const languages = {
     "others": 30,
 };
 
-test('Insertion tag is removed in `buildFile`', () => {
+test('Tags remain after `buildFile` is called', () => {
     const oldContent = [
         README_PREFIX,
-        README_INSERT_TAG,
+        README_START_INSERT_TAG,
+        README_END_INSERT_TAG,
     ].join("");
 
     const newContent = "Hello";
     const data = buildFile(oldContent, newContent);
 
-    expect(data).not.toEqual(expect.stringContaining(README_INSERT_TAG));
+    expect(data).toEqual(expect.stringContaining(README_START_INSERT_TAG));
+    expect(data).toEqual(expect.stringContaining(README_END_INSERT_TAG));
 });
 
 test('New content is added into string by `buildFile`', () => {
     const oldContent = [
         README_PREFIX,
-        README_INSERT_TAG,
-    ].join("");
+        README_START_INSERT_TAG,
+        README_END_INSERT_TAG,
+    ].join("\n");
 
     const newContent = "Hello";
     const data = buildFile(oldContent, newContent);
@@ -46,7 +47,8 @@ test('New content is added into string by `buildFile`', () => {
 test('Old content is unaffected by `buildFile`', () => {
     const oldContent = [
         README_PREFIX,
-        README_INSERT_TAG,
+        README_START_INSERT_TAG,
+        README_END_INSERT_TAG,
         README_SUFFIX,
     ].join("\n");
 

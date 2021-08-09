@@ -6454,19 +6454,21 @@ const fs = __nccwpck_require__(5747);
  * @returns {string}
  */
 function buildFile(oldContent, newContent) {
-    const insertTag = "<!--REPO-SUMMARY-->";
-    const tagIndex = oldContent.indexOf(insertTag);
+    const startOfInsertTag = "<!-- REPO-SUMMARY:START -->";
+    const endOfInsertTag = "<!-- REPO-SUMMARY:END -->";
+    const startOfTagIndex = oldContent.indexOf(startOfInsertTag);
+    const endOfTagIndex = oldContent.indexOf(endOfInsertTag);
 
-    if (tagIndex === -1) {
-        throw `Unable to find tag marking insertion point. Required ${insertTag}`;
+    if (startOfTagIndex === -1 || endOfTagIndex === -1) {
+        throw `Unable to find tag marking insertion point. Required ${startOfInsertTag} and ${endOfInsertTag}`;
     }
 
     return [
-        oldContent.slice(0, tagIndex),
+        oldContent.slice(0, startOfTagIndex + startOfInsertTag.length),
         '\n',
         newContent,
         '\n',
-        oldContent.slice(tagIndex + insertTag.length)
+        oldContent.slice(endOfTagIndex)
     ].join("");
 }
 
@@ -6558,18 +6560,24 @@ const execute = (cmd, args = []) => new Promise((resolve, reject) => {
  * @param {string} message - commit message  
  */
 async function commitFile(githubToken, username, email, message, ...paths) {
+    const execIfNotNull = (subject, fn) => {
+        if (subject) fn();
+    };
+
     try {
 
-        await execute("git", ["config", "--global", "user.email", email]);
-        await execute("git", ["config", "--global", "user.name", username]);
+        execIfNotNull(email, await execute("git", ["config", "--global", "user.email", email]));
+        execIfNotNull(username, await execute("git", ["config", "--global", "user.name", username]));
 
-        if (githubToken) {
+        execIfNotNull(
+            githubToken,
             await execute(
                 "git", [
                 "remote", "set-url", "origin",
                 `https://${githubToken}@github.com/${process.env.GITHUB_REPOSITORY}.git`
-            ]);
-        }
+            ])
+        );
+
 
         await execute("git", ["add", ...paths]);
         await execute("git", ["commit", "--message", `"${message}"`]);

@@ -5,7 +5,6 @@ const {
     aggregateLanguages,
     calculateAttributes,
     createLanguageBar,
-    createLanguageNode,
 } = require('../src/formatters/languages');
 
 const { formatSummary } = require("../src/formatters/summary");
@@ -14,10 +13,11 @@ const { writeFile, buildFile } = require("../src/utils");
 const {
     README_PATH,
     README_PREFIX,
-    README_INSERT_TAG,
-    OUT_FOLDER,
+    README_START_INSERT_TAG,
+    README_END_INSERT_TAG,
 
-    initDummyReadme,
+    OUT_FOLDER,
+    README_SUFFIX,
 } = require("./common");
 
 const data = {
@@ -38,17 +38,22 @@ const data = {
 }
 
 test('Summarise, formats and writes repository details to README', () => {
-    initDummyReadme();
+    // Create dummy file
+    fs.writeFileSync(README_PATH, [
+        README_PREFIX,
+        README_START_INSERT_TAG,
+        README_END_INSERT_TAG,
+        README_SUFFIX,
+    ].join("\n"));
+
 
     const outFolder = path.join(OUT_FOLDER, data.full_name);
     if (!fs.existsSync(outFolder)) {
         fs.mkdirSync(outFolder, { recursive: true });
     }
+
     const pathToSvg = path.join(outFolder, "languages.svg");
-    const oldContent = [
-        README_PREFIX,
-        README_INSERT_TAG,
-    ].join("");
+    const oldContent = fs.readFileSync(README_PATH);
 
 
     // Fill in attributes
