@@ -33,7 +33,7 @@ jobs:
       - run: git push
 
   repo_summary_job:
-    needs: build
+    needs: [test, build]
     runs-on: ubuntu-latest
     name: Write a summary of specified repositories into a Markdown file
     steps:
