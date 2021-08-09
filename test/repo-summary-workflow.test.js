@@ -5,7 +5,6 @@ const {
     aggregateLanguages,
     calculateAttributes,
     createLanguageBar,
-    createLanguageNode,
 } = require('../src/formatters/languages');
 
 const { formatSummary } = require("../src/formatters/summary");
@@ -14,15 +13,16 @@ const { writeFile, buildFile } = require("../src/utils");
 const {
     README_PATH,
     README_PREFIX,
-    README_INSERT_TAG,
-    OUT_FOLDER,
+    README_START_INSERT_TAG,
+    README_END_INSERT_TAG,
 
-    initDummyReadme,
+    OUT_FOLDER,
+    README_SUFFIX,
 } = require("./common");
 
 const data = {
     html_url: "https://github.com/hoangvu01/Tetris-Plus-Plus",
-    fullname: "hoangvu01/Tetris-Plus-Plus",
+    full_name: "hoangvu01/Tetris-Plus-Plus",
     description: "Sample description",
 
 
@@ -38,17 +38,22 @@ const data = {
 }
 
 test('Summarise, formats and writes repository details to README', () => {
-    initDummyReadme();
+    // Create dummy file
+    fs.writeFileSync(README_PATH, [
+        README_PREFIX,
+        README_START_INSERT_TAG,
+        README_END_INSERT_TAG,
+        README_SUFFIX,
+    ].join("\n"));
 
-    const outFolder = path.join(OUT_FOLDER, data.fullname);
+
+    const outFolder = path.join(OUT_FOLDER, data.full_name);
     if (!fs.existsSync(outFolder)) {
         fs.mkdirSync(outFolder, { recursive: true });
     }
+
     const pathToSvg = path.join(outFolder, "languages.svg");
-    const oldContent = [
-        README_PREFIX,
-        README_INSERT_TAG,
-    ].join("");
+    const oldContent = fs.readFileSync(README_PATH);
 
 
     // Fill in attributes
@@ -58,7 +63,7 @@ test('Summarise, formats and writes repository details to README', () => {
     // Generate the horizontal bar and writes to file
     createLanguageBar(data.languages, pathToSvg);
 
-    const summary = formatSummary(data, OUT_FOLDER);
+    const summary = formatSummary(data, pathToSvg);
     const newFileContent = buildFile(oldContent, summary);
 
     writeFile(README_PATH, newFileContent);

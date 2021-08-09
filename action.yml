@@ -1,8 +1,24 @@
 name: 'Repository summary'
 description: 'Write a summary for a list of selected repositories into a README file'
 inputs:
+  GITHUB_TOKEN:
+    description: 'GitHub token for the workflow'
+    required: true
+  commit_email:
+    description: 'Email for the commit'
+    required: false
+  commit_username:
+    description: 'Username for the commit'
+    required: false
+  commit_message:
+    description: 'Commit message'
+    required: true
   readme_path:
     description: 'Path to the readme file (relative to the root of the git repo) you want to update'
+    default: './README.md'
+    required: false
+  output_path:
+    description: 'Path to the output file'
     default: './README.md'
     required: false
   repo_list:
@@ -16,11 +32,11 @@ inputs:
     description: 'Maximum number of languages displayed'
     required: false
     default: '5'
-  lang_bar_width: 
+  language_bar_width: 
     description: 'Width of the language breakdown horizontal bar'
     required: false
     default: '100'
-  lang_bar_height: 
+  language_bar_height: 
     description: 'Height of the language breakdown horizontal bar'
     required: false
     default: '20'
@@ -29,4 +45,4 @@ outputs:
     description: 'The JSON serialised result of the repos attributes'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'dist/index.js'

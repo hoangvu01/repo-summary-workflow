@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "ncc build src/repo-summary-workflow.js -o dist",
     "test": "jest"
   },
   "keywords": [],

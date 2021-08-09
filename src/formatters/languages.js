@@ -1,6 +1,7 @@
 const fs = require("fs");
 
-/* Generates a random colour.
+/** 
+ * Generates a random colour.
  * @returns string
  */
 function getRandomColour() {
@@ -12,7 +13,8 @@ function getRandomColour() {
     return color;
 }
 
-/* Aggregate an Object<string, int> so that the result contains the largest [maxCount] - 1 
+/**
+ * Aggregate an Object<string, int> so that the result contains the largest [maxCount] - 1 
  * elements unmodified and the last item is the aggregate of the other values.
  *
  * @param   {Object<string, number>} 
@@ -31,18 +33,19 @@ function aggregateLanguages(languages, maxCount = 5) {
 
     if (items.length > maxCount) {
         // Total values for the aggregated languages
-        let aggrBytes = 0;
-        let itemsToAggr = items.slice(start = maxCount - 1);
-        Object.values(itemsToAggr).forEach(val => aggrBytes += val);
+        let aggrBytes = items
+            .slice(start = maxCount - 1)
+            .map(([_, bytes]) => bytes)
+            .reduce((a, b) => a + b, 0);
 
         // Replace the last (n - [maxCount] - 1) elements with the aggregated value
         items.splice(start = maxCount - 1);
-        items.push(["others", aggrBytes]);
+        items.push(["Others", aggrBytes]);
     }
     return Object.fromEntries(items);
 }
 
-/* 
+/** 
  * Calculate the percentage of the language throughout the repo and assign a colour. 
  */
 function calculateAttributes(languages) {
@@ -61,7 +64,7 @@ function calculateAttributes(languages) {
     return res;
 }
 
-/*
+/**
  * Create a text node for the legend.
  */
 const createLanguageNode = (colour) =>
@@ -70,7 +73,7 @@ const createLanguageNode = (colour) =>
     + '</svg>';
 
 
-/*
+/**
  * Creates a horizontal bar representing the ratio of languages used.
  * 
  * @param {Object<String, int>} 
