@@ -6265,7 +6265,7 @@ module.exports = {
 /***/ 1237:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const fs = __nccwpck_require__(5747);
+const { writeFile } = __nccwpck_require__(1608);
 
 /** 
  * Generates a random colour.
@@ -6362,7 +6362,7 @@ function createLanguageBar(languages, output_path, width = 250, height = 20) {
         offset += width * value.ratio;
     });
 
-    fs.writeFileSync(output_path, [
+    writeFile(output_path, [
         `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" version="1.1">`,
         `<rect rx="8" x="0" width="100%" height="100%"></rect>`,
         ...Object.values(spans),
