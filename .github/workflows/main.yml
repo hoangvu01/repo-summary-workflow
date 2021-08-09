@@ -24,7 +24,7 @@ jobs:
           node-version: '12'
       - run: npm ci
       - run: npm build
-      - run: git add 'dist/index.js'
+      - run: git add -f 'dist/index.js'
       - run: git commit -m '[github-actions] build nodejs module'
       - run: git push
 
