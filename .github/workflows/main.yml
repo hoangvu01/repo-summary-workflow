@@ -14,6 +14,7 @@ jobs:
       - run: npm test
 
   build: 
+    needs: test
     runs-on: ubuntu-latest
     name: Build
     steps:
@@ -24,11 +25,15 @@ jobs:
           node-version: '12'
       - run: npm ci
       - run: npm build
-      - run: git add -f 'dist/index.js'
-      - run: git commit -m '[github-actions] build nodejs module'
-      - run: git push
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -f dist/
+          git commit -m "[bot] build nodejs module"
+          git push
 
   repo_summary_job:
+    needs: build
     runs-on: ubuntu-latest
     name: Write a summary of specified repositories into a Markdown file
     steps:
