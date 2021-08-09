@@ -6,10 +6,10 @@ inputs:
     required: true
   commit_email:
     description: 'Email for the commit'
-    required: true
+    required: false
   commit_username:
     description: 'Username for the commit'
-    required: true
+    required: false
   commit_message:
     description: 'Commit message'
     required: true

@@ -24,8 +24,6 @@ jobs:
         id: rsw
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          commit_username: github-actions
-          commit_email: github-actions@github.com
           commit_message: Update repository summaries in README
           readme_path: ./example/README_TEMPLATE.md
           output_path: ./example/README.md
