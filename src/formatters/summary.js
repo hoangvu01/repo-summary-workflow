@@ -1,8 +1,13 @@
+const core = require('@actions/core');
 const { createLanguageNode } = require('./languages');
 
-const octicon = (item, size, alt) => {
+const octicon = (item, size, alt, colour = 'b3b3b3') => {
     const altText = alt ? alt : item;
-    const url = `https://icongr.am/octicons/${item}.svg?size=${size}`;
+
+    const userColour = core.getInput('icon_colour');
+    if (userColour) colour = userColour;
+
+    const url = `https://icongr.am/octicons/${item}.svg?size=${size}?color=${colour}`;
 
     return `![${altText}](${url})`;
 };
@@ -24,9 +29,9 @@ const languageTextTemplate = '1. $node `$lang` - **$ratio%** ($size bytes)';
  */
 const formatSummary = (repoData, svgPath) => {
     const stats = '####  '
-        + `${octicon("eye", 16)} ${repoData.watchers_count} `
-        + `${octicon("git-fork", 16)} ${repoData.forks_count} `
-        + `${octicon("star", 16)} ${repoData.stargazers_count} `;
+        + `${octicon("eye", 16)} watchers ${repoData.watchers_count} `
+        + `${octicon("git-fork", 16)} forks ${repoData.forks_count} `
+        + `${octicon("star", 16)} stars ${repoData.stargazers_count} `;
 
     return [
         `### ${octicon("repo", 20)} [${repoData.full_name}](${repoData.html_url})`,
