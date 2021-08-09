@@ -25,12 +25,11 @@ jobs:
           node-version: '12'
       - run: npm ci
       - run: npm build
-      - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add -f dist/
-          git commit -m "[bot] build nodejs module"
-          git push
+      - run: git config -g user.name github-actions
+      - run: git config -g user.email github-actions@github.com
+      - run: git add -f dist/
+      - run: git commit -m "[bot] build nodejs module"
+      - run: git push
 
   repo_summary_job:
     needs: build
