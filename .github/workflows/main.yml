@@ -13,6 +13,21 @@ jobs:
       - run: npm ci
       - run: npm test
 
+  build: 
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: npm ci
+      - run: npm build
+      - run: git add 'dist/index.js'
+      - run: git commit -m '[github-actions] build nodejs module'
+      - run: git push
+
   repo_summary_job:
     runs-on: ubuntu-latest
     name: Write a summary of specified repositories into a Markdown file
