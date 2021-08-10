@@ -21,6 +21,6 @@
           readme_path: ./example/README_TEMPLATE.md
           output_path: ./example/README.md
           repo_list: hoangvu01/Tetris-Plus-Plus ; hoangvu01/not_here 
-          image_folder: assets/
+          image_folder: ./example/images/
           language_bar_width: 250
           language_bar_height: 10
