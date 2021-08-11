@@ -1,0 +1,22 @@
+on: 
+  schedule:
+    - cron: '0 0 * * *' # Every day at midnight
+  workflow_dispatch: # Allows manual runs
+
+jobs:
+  update-github-colours: 
+    runs-on: ubuntu-latest
+    name: Check and update GitHub language colours
+    steps:
+      - uses: actions/checkout@v2
+      - run: git config --global user.name github-actions 
+      - run: git config --global user.email github-actions@github.com  
+      - name: Download languages.yml
+        run: curl -O https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
+      - run: |
+          git diff --exit-code --name-status languages.yml \
+          [[ $? == '0' ]] && exit 0 \
+          git add languages.yml \
+          git commit -m 'Update GitHub languages colour scheme' \
+          git push
+
