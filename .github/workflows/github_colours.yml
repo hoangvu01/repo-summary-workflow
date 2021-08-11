@@ -13,10 +13,12 @@ jobs:
       - run: git config --global user.email github-actions@github.com  
       - name: Download languages.yml
         run: curl -O https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml
-      - run: |
-          git diff --exit-code --name-status languages.yml \
-          [[ $? == '0' ]] && exit 0 \
+      - name: Check if languages.yml has been updated
+        id: gd
+        run: git diff --exit-code --name-status languages.yml
+      - name: Stage new file if changes made
+        if: ${{ steps.gd.conclusion == 'failure' }}
+        run: |
           git add languages.yml \
-          git commit -m 'Update GitHub languages colour scheme' \
-          git push
-
+          && git commit -m 'Update GitHub languages colour scheme' \
+          && git push
