@@ -33,7 +33,7 @@ const data = {
     languages: {
         "C++": 50,
         "Python": 100,
-        "JS": 25,
+        "JavaScript": 25,
     }
 }
 

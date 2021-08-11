@@ -1,16 +1,33 @@
+const fs = require('fs');
+const yaml = require('js-yaml');
+const core = require('@actions/core');
+const process = require('process');
+
 const { writeFile } = require("../utils");
 
-/** 
- * Generates a random colour.
- * @returns string
+let ghLanguage = {}
+try {
+    ghLanguage = yaml.load(fs.readFileSync('languages.yml'), { json: true });
+    core.info("Loaded GitHub languages details successfully");
+} catch (e) {
+    core.error("Error while loading GitHub languages:");
+    core.error(e);
+    process.exit(1);
+}
+
+/**
+ * 
+ * @param {string} language - Name of the language
+ * @returns 
  */
-function getRandomColour() {
-    let letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+const getLanguageColour = (language) => {
+    if (ghLanguage[language])
+        return ghLanguage[language].color;
+
+    if (language.toLowerCase() === "others")
+        return "#ededed";
+
+    throw 'Unknown GitHub language: ' + language;
 }
 
 /**
@@ -58,7 +75,7 @@ function calculateAttributes(languages) {
         res[lang] = {
             size: bytes,
             ratio: bytes / totalBytes,
-            colour: getRandomColour(),
+            colour: getLanguageColour(lang),
         };
     });
     return res;

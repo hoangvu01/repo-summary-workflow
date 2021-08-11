@@ -12,8 +12,8 @@ const {
 } = require("./common");
 
 const languages = {
-    "python": 120,
-    "js": 60,
+    "Python": 120,
+    "JavaScript": 60,
     "others": 30,
 };
 
