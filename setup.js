@@ -17,7 +17,7 @@ if (curl.stderr) {
     });
 }
 
-app.on('close', (code) => {
+curl.on('close', (code) => {
     if (code !== 0) {
         console.error("Exit with status: " + code)
         return reject({ code, outputData });
@@ -29,4 +29,4 @@ app.on('close', (code) => {
     return resolve({ code, outputData });
 });
 
-app.on('error', (code) => reject({ code, outputData, errorData }));
+curl.on('error', (code) => reject({ code, outputData, errorData }));
