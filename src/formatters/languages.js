@@ -1,19 +1,10 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
 const core = require('@actions/core');
-const process = require('process');
 
 const { writeFile } = require("../utils");
 
 let ghLanguage;
-try {
-    ghLanguage = yaml.load(fs.readFileSync('languages.yml'), { json: true });
-    core.info("Loaded GitHub languages details successfully");
-} catch (e) {
-    core.error("Error while loading GitHub languages:");
-    core.error(e);
-    process.exit(1);
-}
 
 /**
  * 
@@ -21,6 +12,11 @@ try {
  * @returns 
  */
 const getLanguageColour = (language) => {
+    if (!ghLanguage) {
+        ghLanguage = yaml.load(fs.readFileSync("languages.yml"), { json: true });
+        core.info("Loaded GitHub languages details successfully");
+    }
+
     if (ghLanguage[language])
         return ghLanguage[language].color;
 

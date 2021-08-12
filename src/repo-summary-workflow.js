@@ -8,7 +8,7 @@ const fs = require('fs');
 const { aggregateLanguages, createLanguageBar, calculateAttributes } = require('./formatters/languages');
 const { formatSummary } = require('./formatters/summary');
 const { getRepositoryInfo } = require('./fetcher');
-const { buildFile, writeFile, commitFile } = require('./utils');
+const { buildFile, writeFile, commitFile, execute } = require('./utils');
 
 // GitHub config
 const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
@@ -87,6 +87,8 @@ Promise.allSettled(promiseArray).then((results) => {
 }).catch((err) => {
     core.error(err);
 }).finally(async () => {
+
+    await execute("curl", ["-O", "https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml"]);
 
     reposArray.forEach((repoData) => {
         // Enrich [repoData.languages] to contain size, ratio and colour

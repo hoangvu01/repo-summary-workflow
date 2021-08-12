@@ -148,4 +148,5 @@ module.exports = {
     buildFile,
     writeFile,
     commitFile,
+    execute,
 }
