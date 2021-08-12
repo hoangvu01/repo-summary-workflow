@@ -10439,7 +10439,7 @@ const process = __nccwpck_require__(1765);
 
 const { writeFile } = __nccwpck_require__(1608);
 
-let ghLanguage = {}
+let ghLanguage;
 try {
     ghLanguage = yaml.load(fs.readFileSync('languages.yml'), { json: true });
     core.info("Loaded GitHub languages details successfully");
