@@ -10435,19 +10435,10 @@ module.exports = {
 const fs = __nccwpck_require__(5747);
 const yaml = __nccwpck_require__(1917);
 const core = __nccwpck_require__(2186);
-const process = __nccwpck_require__(1765);
 
 const { writeFile } = __nccwpck_require__(1608);
 
 let ghLanguage;
-try {
-    ghLanguage = yaml.load(fs.readFileSync('languages.yml'), { json: true });
-    core.info("Loaded GitHub languages details successfully");
-} catch (e) {
-    core.error("Error while loading GitHub languages:");
-    core.error(e);
-    process.exit(1);
-}
 
 /**
  * 
@@ -10455,6 +10446,11 @@ try {
  * @returns 
  */
 const getLanguageColour = (language) => {
+    if (!ghLanguage) {
+        ghLanguage = yaml.load(fs.readFileSync("languages.yml"), { json: true });
+        core.info("Loaded GitHub languages details successfully");
+    }
+
     if (ghLanguage[language])
         return ghLanguage[language].color;
 
@@ -10780,6 +10776,7 @@ module.exports = {
     buildFile,
     writeFile,
     commitFile,
+    execute,
 }
 
 /***/ }),
@@ -10963,7 +10960,7 @@ const fs = __nccwpck_require__(5747);
 const { aggregateLanguages, createLanguageBar, calculateAttributes } = __nccwpck_require__(1237);
 const { formatSummary } = __nccwpck_require__(2293);
 const { getRepositoryInfo } = __nccwpck_require__(9706);
-const { buildFile, writeFile, commitFile } = __nccwpck_require__(1608);
+const { buildFile, writeFile, commitFile, execute } = __nccwpck_require__(1608);
 
 // GitHub config
 const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
@@ -11042,6 +11039,8 @@ Promise.allSettled(promiseArray).then((results) => {
 }).catch((err) => {
     core.error(err);
 }).finally(async () => {
+
+    await execute("curl", ["-O", "https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml"]);
 
     reposArray.forEach((repoData) => {
         // Enrich [repoData.languages] to contain size, ratio and colour
