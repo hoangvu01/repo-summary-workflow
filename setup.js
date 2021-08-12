@@ -20,13 +20,9 @@ if (curl.stderr) {
 curl.on('close', (code) => {
     if (code !== 0) {
         console.error("Exit with status: " + code)
-        return reject({ code, outputData });
     }
 
     if (fs.existsSync("languages.yml")) {
         console.log("File languages.yml has been downloaded!")
     }
-    return resolve({ code, outputData });
 });
-
-curl.on('error', (code) => reject({ code, outputData, errorData }));
