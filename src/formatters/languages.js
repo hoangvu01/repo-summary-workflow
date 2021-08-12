@@ -5,7 +5,7 @@ const process = require('process');
 
 const { writeFile } = require("../utils");
 
-let ghLanguage = {}
+let ghLanguage;
 try {
     ghLanguage = yaml.load(fs.readFileSync('languages.yml'), { json: true });
     core.info("Loaded GitHub languages details successfully");

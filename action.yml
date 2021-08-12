@@ -45,4 +45,5 @@ outputs:
     description: 'The JSON serialised result of the repos attributes'
 runs:
   using: 'node12'
+  pre: 'setup.js'
   main: 'dist/index.js'
